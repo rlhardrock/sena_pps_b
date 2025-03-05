@@ -1,5 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { PulmonEnum } from '../../../../common/enums';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateCarcassDto {
   @IsString()
@@ -14,6 +13,4 @@ export class CreateCarcassDto {
   @IsNotEmpty()
   canales_destrozadas: number;
 
-  @IsEnum(PulmonEnum)
-  despulmonado: PulmonEnum;
 }

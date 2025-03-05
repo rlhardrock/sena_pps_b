@@ -1,42 +1,115 @@
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsDate, IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateBeneficioDto {
+  @IsString()
   @IsNotEmpty()
   id_remision: string;
 
-  @IsOptional()
-  @IsNumber()
-  peso_hidratacion_lote: number;
+  @IsString()
+  @IsNotEmpty()
+  id_empresa: string;
 
-  @IsOptional()
-  @IsNumber()
-  total_rendimiento_canal: number;
+  @IsString()
+  @IsNotEmpty()
+  region_procedencia: string;
 
-  @IsOptional()
-  @IsNumber()
-  rendimiento_visceras_rojas: number;
+  @IsString()
+  @IsNotEmpty()
+  granja: string;
 
-  @IsOptional()
-  @IsNumber()
-  rendimiento_visceras_blancas: number;
+  @IsString()
+  @IsNotEmpty()
+  galpon: string;
 
-  @IsOptional()
-  @IsNumber()
-  rendimiento_patas: number;
+  @IsString()
+  @IsNotEmpty()
+  linea_aves: string;
 
-  @IsOptional()
-  @IsNumber()
-  rendimiento_plumas: number;
+  @IsString()
+  @IsNotEmpty()
+  sexo: string;
 
-  @IsOptional()
-  @IsNumber()
-  rendimiento_sangre: number;
+  @IsInt()
+  @Min(1)
+  @Max(50)
+  @IsNotEmpty()
+  edad: number;
 
-  @IsOptional()
-  @IsNumber()
-  residuos_lodos: number;
+  @IsInt()
+  @IsNotEmpty()
+  peso_promedio_ave_granja: number;
 
-  @IsOptional()
-  @IsNumber()
-  total_rendimiento_extra: number;
+  @IsString()
+  @IsNotEmpty()
+  placa_vehiculo: string;
+
+  @IsString()
+  @IsNotEmpty()
+  id_conductor: string;
+
+  @IsString()
+  @IsNotEmpty()
+  nombre_conductor: string;
+
+  @IsString()
+  @IsNotEmpty()
+  id_plan_sanitario: string;
+
+  @IsString()
+  @IsNotEmpty()
+  tp_profesional_granja: string;
+
+  @IsString()
+  @IsNotEmpty()
+  nombre_profesional: string;
+
+  @IsString()
+  @IsNotEmpty()
+  tp_profesional_planta: string;
+
+  @IsString()
+  @IsNotEmpty()
+  nombre_auditor: string;
+
+  @IsDate()
+  @Type(() => Date)
+  hora_beneficio: Date;
+
+  @IsInt()
+  @IsNotEmpty()
+  aves_por_guacal: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  guacales_vacios: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  guacales_usados: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  guacal_extra: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  aves_remisionadas: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  aves_colgadas: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  aves_asfixiadas: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  peso_1_guacal_vacio: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  peso_torre_7_guacales: number;
+
 }

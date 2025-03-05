@@ -1,96 +1,65 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateBeneficioDto } from './dto/create-beneficio.dto';
 import { Beneficio } from './entities/beneficio.entity';
-import { Broiler } from '../broilers/entities/broiler.entity';
-import { Carcass } from '../carcasses/entities/carcass.entity';
 import { UpdateBeneficioDto } from './dto/update-beneficio.dto';
-
+import { CreateBeneficioDto } from './dto/create-beneficio.dto';
 
 @Injectable()
 export class BeneficiosService {
   constructor(
     @InjectRepository(Beneficio)
-    private beneficioRepository: Repository<Beneficio>,
-    @InjectRepository(Broiler)
-    private broilerRepository: Repository<Broiler>,
-    @InjectRepository(Carcass)
-    private carcassRepository: Repository<Carcass>,
+    private readonly beneficioRepository: Repository<Beneficio>,
   ) {}
 
-  async actualizarBeneficio(id_remision: string, updateBeneficioDto: UpdateBeneficioDto) {
-    const beneficio = await this.beneficioRepository.findOne({
-      where: { broiler: { id_remision } },
+  async crearBeneficio(createBeneficioDto: CreateBeneficioDto): Promise<Beneficio> {
+    const fechaOriginal = new Date(createBeneficioDto.hora_beneficio);
+    fechaOriginal.setSeconds(0, 0); // Eliminar segundos y milisegundos
+    const nuevoBeneficio = this.beneficioRepository.create({
+      ...createBeneficioDto,
+      hora_beneficio: fechaOriginal,
     });
+    return this.beneficioRepository.save(nuevoBeneficio);
+  }
+
+  // Listar todos los id_remision disponibles.
+  async listarTodasLasRemisiones(): Promise<{ id_remision: string }[]> {
+    return this.beneficioRepository.find({ select: ['id_remision'] });
+  }
+
+  // Listar todos los id_remision de una empresa específica.
+  async listarRemisionesPorEmpresa(id_empresa: string): Promise<{ id_remision: string }[]> {
+    return this.beneficioRepository.find({
+      where: { id_empresa },
+      select: Object.keys(this.beneficioRepository.metadata.propertiesMap) as (keyof Beneficio)[]
+    });
+  }
+
+  // Buscar un beneficio broiler por id_remision.
+  async buscarPorRemision(id_remision: string): Promise<Beneficio> {
+    const beneficio = await this.beneficioRepository.findOne({
+      where: { id_remision },
+      select: Object.keys(this.beneficioRepository.metadata.propertiesMap) as (keyof Beneficio)[]
+    });
+    if (!beneficio) {
+      throw new NotFoundException('No se encontró la remisión');
+    }
+
+    return beneficio;
+  }
+
+  // Editar un beneficio broiler por id_remision (Supervisor).
+  async actualizarPorRemision(
+    id_remision: string,
+    updateBeneficioDto: UpdateBeneficioDto,
+  ): Promise<Beneficio> {
+    const beneficio = await this.beneficioRepository.findOne({ where: { id_remision } });
 
     if (!beneficio) {
-      throw new NotFoundException(`No se encontró beneficio con id_remision ${id_remision}`);
+      throw new NotFoundException('No se encontró la remisión');
     }
 
     Object.assign(beneficio, updateBeneficioDto);
-    return await this.beneficioRepository.save(beneficio);
+    return this.beneficioRepository.save(beneficio);
   }
-
-  async create(createBeneficioDto: CreateBeneficioDto) {
-    const broiler = await this.broilerRepository.findOne({
-      where: { id_remision: createBeneficioDto.id_remision },
-    });
-
-    if (!broiler) {
-      throw new NotFoundException('ID Remisión no encontrado en Área Sucia');
-    }
-
-    const carcass = await this.carcassRepository.findOne({
-      where: { broiler },
-    });
-
-    if (!carcass) {
-      throw new NotFoundException('ID Remisión no encontrado en Área Limpia');
-    }
-
-    const peso_hidratacion_lote = ((broiler.peso_lote_aves_planta * 0.75) + ((broiler.peso_lote_aves_planta * 0.75) * 0.14));
-    const total_rendimiento_canal = ((broiler.peso_lote_aves_planta * 0.75) * broiler.aves_colgadas);
-    const rendimiento_visceras_rojas = ((broiler.peso_lote_aves_planta * 0.03) * broiler.aves_colgadas);
-    const rendimiento_visceras_blancas = ((broiler.peso_lote_aves_planta * 0.07) * broiler.aves_colgadas);
-    const rendimiento_patas = ((broiler.peso_lote_aves_planta * 0.04) * broiler.aves_colgadas);
-    const rendimiento_plumas = ((broiler.peso_lote_aves_planta * 0.6) * broiler.aves_colgadas);
-    const rendimiento_sangre = ((broiler.peso_lote_aves_planta * 0.05) * broiler.aves_colgadas);
-    const residuos_lodos = ((broiler.peso_lote_aves_planta * 0.05) * broiler.aves_colgadas);
-
-    const beneficio = this.beneficioRepository.create({
-      broiler,
-      carcass,
-      peso_hidratacion_lote,
-      total_rendimiento_canal,
-      rendimiento_visceras_rojas,
-      rendimiento_visceras_blancas,
-      rendimiento_patas,
-      rendimiento_plumas,
-      rendimiento_sangre,
-      residuos_lodos
-    });
-
-    return await this.beneficioRepository.save(beneficio);
-  }
-
-  async findByRemision(id_remision: string) {
-    return await this.beneficioRepository.findOne({
-      where: { broiler: { id_remision } },
-      relations: ['broiler', 'carcass'],
-    });
-  }
-
-  async update(id: number, updateBeneficioDto: Partial<CreateBeneficioDto>) {
-    await this.beneficioRepository.update(id, updateBeneficioDto);
-    return this.beneficioRepository.findOne({ where: { id } });
-  }
-
-  async listarIdRemision(): Promise<{ id_remision: string }[]> {
-    return await this.broilerRepository.find({
-      select: ['id_remision'],
-    });
-  }
-
-
 }

@@ -1,15 +1,107 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateBeneficioDto } from './create-beneficio.dto';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class UpdateBeneficioDto extends PartialType(CreateBeneficioDto) {
-  @IsNotEmpty()
+export class UpdateBeneficioDto {
+  /*@IsOptional()
   @IsString()
-  id_remision: string; // Se debe enviar la ID de la remisión a actualizar
+  id_remision?: string;*/
 
   @IsOptional()
-  nuevo_campo_1?: string; // Campos adicionales que puede editar el supervisor
+  @IsString()
+  id_empresa?: string;
 
   @IsOptional()
-  nuevo_campo_2?: number;
+  @IsString()
+  region_procedencia?: string;
+
+  @IsOptional()
+  @IsString()
+  granja?: string;
+
+  @IsOptional()
+  @IsString()
+  galpon?: string;
+
+  @IsOptional()
+  @IsString()
+  linea_aves?: string;
+
+  @IsOptional()
+  @IsString()
+  sexo?: string;
+
+  @IsOptional()
+  @IsNumber()
+  edad?: number;
+
+  @IsOptional()
+  @IsNumber()
+  peso_promedio_ave_granja?: number;
+
+  @IsOptional()
+  @IsString()
+  placa_vehiculo?: string;
+
+  @IsOptional()
+  @IsString()
+  id_conductor?: string;
+
+  @IsOptional()
+  @IsString()
+  nombre_conductor?: string;
+
+  @IsOptional()
+  @IsString()
+  id_plan_sanitario?: string;
+
+  @IsOptional()
+  @IsString()
+  tp_profesional_granja?: string;
+
+  @IsOptional()
+  @IsString()
+  nombre_profesional?: string;
+
+  @IsOptional()
+  @IsString()
+  tp_profesional_planta?: string;
+
+  @IsOptional()
+  @IsString()
+  nombre_auditor?: string;
+
+  @IsOptional()
+  @IsNumber()
+  aves_por_guacal?: number;
+
+  @IsOptional()
+  @IsNumber()
+  guacales_vacios?: number;
+
+  @IsOptional()
+  @IsNumber()
+  guacales_usados?: number;
+
+  @IsOptional()
+  @IsNumber()
+  guacal_extra?: number;
+
+  @IsOptional()
+  @IsNumber()
+  aves_remisionadas?: number;
+
+  @IsOptional()
+  @IsNumber()
+  aves_colgadas?: number;
+
+  @IsOptional()
+  @IsNumber()
+  aves_asfixiadas?: number;
+
+  @IsOptional()
+  @IsNumber()
+  peso_1_guacal_vacio?: number;
+
+  @IsOptional()
+  @IsNumber()
+  peso_torre_7_guacales?: number;
 }

@@ -12,7 +12,7 @@ export class CarcassController {
   constructor(private readonly carcassService: CarcassService) {}
 
   @Post()
-  @Roles(RoleEnum.JEFE_AREA_LIMPIA) // Solo este rol puede acceder
+  /*@Roles(RoleEnum.JEFE_AREA_LIMPIA) // Solo este rol puede acceder*/
   async create(@Body() createCarcassDto: CreateCarcassDto) {
     return await this.carcassService.create(createCarcassDto);
   }

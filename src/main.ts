@@ -5,16 +5,23 @@ import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('avi');
+
+  app.setGlobalPrefix('avi'); // Prefijo global para las rutas
+
+  app.use(helmet()); // Seguridad con Helmet
+
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
+      whitelist: true, // Remueve propiedades no definidas en el DTO
+      forbidNonWhitelisted: true, // Lanza error si hay propiedades desconocidas
+      transform: false, // Convierte automáticamente los tipos de datos (ej: string a number)
     })
   );
-  app.use(helmet());
-  const port =process.env.MAIN_PORT ?? 5432;
+
+  app.enableCors(); // Habilitar CORS para que el frontend pueda comunicarse con el backend
+
+  const port = process.env.PORT ?? 3000; // Definir el puerto, usando 3000 por defecto
   await app.listen(port);
-  console.log(`🚀 Server running on http://localhost:${port}`);
+  console.warn(`🚀 Server running on http://localhost:${port}`);
 }
 bootstrap();

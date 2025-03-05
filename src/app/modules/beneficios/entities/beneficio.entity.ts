@@ -1,57 +1,192 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
-import { Broiler } from '../../broilers/entities/broiler.entity';
-import { Carcass } from '../../carcasses/entities/carcass.entity';
-
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from 'typeorm';
 
 @Entity()
 export class Beneficio {
   @PrimaryGeneratedColumn()
-  id: number;
+  id_beneficio: number;
 
-  @OneToOne(() => Broiler, { eager: true })
-  @JoinColumn({ name: 'id_remision' })
-  broiler: Broiler;
+  @Column({unique: true})
+  id_remision: string;
 
-  @OneToOne(() => Carcass, { nullable: false })
-  @JoinColumn()
-  carcass: Carcass;
+  @Column()
+  id_empresa: string;
 
-  @Column({ type: 'decimal', precision: 5, scale: 3 })
+  @Column()
+  region_procedencia: string;
+
+  @Column()
+  granja: string;
+
+  @Column()
+  galpon: string;
+
+  @Column()
+  linea_aves: string;
+
+  @Column({ type: 'enum', enum: ['Macho', 'Hembra', 'Mixto'] })
+  sexo: string;
+
+  @Column({ type: 'int' })
+  edad: number;
+
+  @Column({ type: 'int' })
+  peso_promedio_ave_granja: number;
+
+  @Column()
+  placa_vehiculo: string;
+
+  @Column()
+  id_conductor: string;
+
+  @Column()
+  nombre_conductor: string;
+
+  @Column()
+  id_plan_sanitario: string;
+
+  @Column()
+  tp_profesional_granja: string;
+
+  @Column()
+  nombre_profesional: string;
+
+  @Column()
+  tp_profesional_planta: string;
+
+  @Column()
+  nombre_auditor: string;
+
+  @Column({ type: 'timestamp', precision: 0 })
+  hora_beneficio: Date;
+
+  @Column({ type: 'int' })
+  aves_por_guacal: number;
+
+  @Column({ type: 'int' })
+  guacales_vacios: number;
+
+  @Column({ type: 'int' })
+  guacales_usados: number;
+
+  @Column({ type: 'int' })
+  guacal_extra: number;
+
+  @Column({ type: 'int' })
+  aves_remisionadas: number;
+
+  @Column({ type: 'int' })
+  aves_colgadas: number;
+
+  @Column({ type: 'int' })
+  aves_asfixiadas: number;
+
+  @Column({ type: 'int' })
+  peso_1_guacal_vacio: number;
+
+  @Column({ type: 'int' })
+  peso_torre_7_guacales: number;
+
+ /* @BeforeInsert()
+  @BeforeUpdate()
+  calculatePesoAvePlanta() {
+    this.peso_promedio_ave_planta =
+      (this.peso_torre_7_guacales / ( this.aves_por_guacal * 7 )) -
+      (this.peso_1_guacal_vacio * 7);
+  }
+
+  @Column({ type: 'int' })
+  peso_promedio_ave_planta: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculatePesoLotePlanta() {
+    this.peso_lote_aves_planta =
+      ((this.peso_promedio_ave_planta * this.aves_colgadas)/1000);
+  }
+
+  @Column({ type: 'decimal', precision: 6, scale: 0 })
+  peso_lote_aves_planta: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculateDiferencial() {
+    this.diferencial_peso_granja_planta =
+      (this.peso_promedio_ave_granja * this.aves_colgadas) - (this.peso_promedio_ave_planta * this.aves_colgadas);
+  }
+
+  @Column({ type: 'int' })
+  diferencial_peso_granja_planta: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculateMerma() {
+    this.indiceMerma =
+      (((this.peso_promedio_ave_granja * this.aves_colgadas) / (this.peso_lote_aves_planta)) * 100 );
+  }
+
+  @Column({ type: 'decimal', precision: 6, scale: 0  })
+  indiceMerma: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculateRendimientoCanal() {
+    this.peso_total_rendimiento_canal =
+      (((this.peso_promedio_ave_planta * this.aves_colgadas) * 0.75 )/1000);
+  }
+
+  @Column({ type: 'decimal', precision: 6, scale: 0  })
+  peso_total_rendimiento_canal: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculateHidratacionFinalCanal() {
+    this.peso_hidratacion_lote =
+      ((this.peso_total_rendimiento_canal + (this.peso_total_rendimiento_canal * 0.14))/1000);
+  }
+
+  @Column({ type: 'decimal', precision: 6, scale: 0  })
   peso_hidratacion_lote: number;
 
-  @Column({ type: 'decimal', precision: 5, scale: 3 })
-  total_rendimiento_canal: number;
+  @BeforeInsert()
+  @BeforeUpdate()
+  rendimientoViscerasRojas() {
+    this.peso_rendimiento_visceras_rojas =
+      ((this.peso_lote_aves_planta + (this.peso_lote_aves_planta * 0.07))/1000);
+  }
 
-  @Column({ type: 'decimal', precision: 5, scale: 3 })
-  rendimiento_visceras_rojas: number;
+  @Column({ type: 'decimal', precision: 6, scale: 0  })
+  peso_rendimiento_visceras_rojas: number;
 
-  @Column({ type: 'decimal', precision: 5, scale: 3 })
-  rendimiento_visceras_blancas: number;
+  @BeforeInsert()
+  @BeforeUpdate()
+  rendimientoViscerasBlancas() {
+    this.peso_rendimiento_visceras_blancas =
+      ((this.peso_lote_aves_planta + (this.peso_lote_aves_planta * 0.05))/1000);
+  }
 
-  @Column({ type: 'decimal', precision: 5, scale: 3 })
-  rendimiento_patas: number;
+  @Column({ type: 'decimal', precision: 6, scale: 0  })
+  peso_rendimiento_visceras_blancas: number;
 
-  @Column({ type: 'decimal', precision: 5, scale: 3 })
-  rendimiento_plumas: number;
+  @BeforeInsert()
+  @BeforeUpdate()
+  rendimientoSangrePatasCabeza() {
+    this.peso_rendimiento_sangre_patas_cabezas =
+      ((this.peso_lote_aves_planta + (this.peso_lote_aves_planta * 0.03))/1000);
+  }
 
-  @Column({ type: 'decimal', precision: 5, scale: 3 })
-  rendimiento_sangre: number;
-
-  @Column({ type: 'decimal', precision: 5, scale: 3 })
-  residuos_lodos: number;
+  @Column({ type: 'decimal', precision: 6, scale: 0  })
+  peso_rendimiento_sangre_patas_cabezas: number;
 
   @BeforeInsert()
   @BeforeUpdate()
   calculateTotalRendimiento() {
     this.total_rendimiento_extra =
-      (this.rendimiento_visceras_rojas ?? 0) +
-      (this.rendimiento_visceras_blancas ?? 0) +
-      (this.rendimiento_patas ?? 0) +
-      (this.rendimiento_plumas ?? 0) +
-      (this.rendimiento_sangre ?? 0);
+      ((this.peso_rendimiento_visceras_rojas ?? 0) +
+      (this.peso_rendimiento_visceras_blancas ?? 0) +
+      ((this.peso_rendimiento_sangre_patas_cabezas ?? 0) * 3) / 1000 )
   }
 
-  @Column({ type: 'decimal', precision: 5, scale: 3 })
-  total_rendimiento_extra: number;
-}
+  @Column({ type: 'decimal', precision: 6, scale: 0  })
+  total_rendimiento_extra: number;*/
 
+}

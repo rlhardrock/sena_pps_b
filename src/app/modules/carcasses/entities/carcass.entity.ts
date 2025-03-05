@@ -1,14 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Broiler } from '../../broilers/entities/broiler.entity';
-import { PulmonEnum } from '../../../../common/enums';
+import { Beneficio } from '../../beneficios/entities/beneficio.entity';
 
 @Entity()
 export class Carcass {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Broiler, { nullable: false })
-  broiler: Broiler;
+  @ManyToOne(() => Beneficio, { nullable: false })
+  beneficio: Beneficio;
 
   @Column({ type: 'int' })
   canales_decomisadas: number;
@@ -16,6 +15,4 @@ export class Carcass {
   @Column({ type: 'int' })
   canales_destrozadas: number;
 
-  @Column({ type: 'enum', enum: PulmonEnum })
-  despulmonado: PulmonEnum;
 }
