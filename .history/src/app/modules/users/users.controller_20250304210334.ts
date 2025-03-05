@@ -39,8 +39,7 @@ export class UsersController {
   @Roles(RoleEnum.ADMINISTRADOR)  // Solo los administradores pueden acceder
   async getAudit() {
     return this.usersService.getAudit();
-  }
-  /*@Get('Administrador')
+  }  /*@Get('Administrador')
   @Roles('Administrador')
   getAdministradorData() {
     return { message: 'Solo accesible para administradores' };
