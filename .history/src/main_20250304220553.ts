@@ -5,7 +5,7 @@ import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('avi');
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -13,8 +13,6 @@ async function bootstrap() {
     })
   );
   app.use(helmet());
-  const port =process.env.MAIN_PORT ?? 5432;
-  await app.listen(port);
-  console.log(`🚀 Server running on http://localhost:${port}`);
+  await app.listen(process.env.PORT ?? 5432);
 }
 bootstrap();

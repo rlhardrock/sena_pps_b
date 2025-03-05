@@ -13,8 +13,6 @@ async function bootstrap() {
     })
   );
   app.use(helmet());
-  const port =process.env.MAIN_PORT ?? 5432;
-  await app.listen(port);
-  console.log(`🚀 Server running on http://localhost:${port}`);
+  await app.listen(process.env.MAIN_PORT ?? 5432);
 }
 bootstrap();
