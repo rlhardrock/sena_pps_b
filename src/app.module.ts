@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './app/modules/users/users.module';
-import { RolesModule } from './app/modules/roles/roles.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { User } from './app/modules/users/entities/user.entity';
-import { Role } from './app/modules/roles/entities/role.entity';
 import { BeneficiosModule } from './app/modules/beneficios/beneficios.module';
 import { CarcassesModule } from './app/modules/carcasses/carcasses.module';
 import { Beneficio } from './app/modules/beneficios/entities/beneficio.entity';
@@ -28,10 +26,9 @@ import { AuthModule } from './app/modules/auth/auth.module';
       autoLoadEntities: true,
       synchronize: true, // Solo para desarrollo, en producción usar migrations
       ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
-      entities: [User, Role, Beneficio, Carcass]
+      entities: [User, Beneficio, Carcass]
     }),
     UsersModule,
-    RolesModule,
     BeneficiosModule,
     CarcassesModule,
     AuthModule

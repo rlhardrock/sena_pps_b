@@ -9,9 +9,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from '../users/entities/user.entity';
 import { RolesGuard } from './roles.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { UsersService } from '../users/users.service';
 
 @Module({
-  imports: [
+
+  imports: [TypeOrmModule.forFeature([User])],
+  providers: [AuthService, UsersService],
+  controllers: [AuthController],
+
+  /*imports: [
     ConfigModule, // Asegura que ConfigService esté disponible
     TypeOrmModule.forFeature([User]),
     PassportModule,
@@ -32,7 +38,7 @@ import { APP_GUARD } from '@nestjs/core';
       useClass: RolesGuard,
     },
   ],
-  controllers: [AuthController],
+  controllers: [AuthController],*/
 })
 
 export class AuthModule {}

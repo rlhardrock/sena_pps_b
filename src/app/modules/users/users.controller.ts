@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Get, Patch, Param, Request } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Patch, Param, Request, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -8,12 +8,13 @@ import { RoleEnum } from '../../../common/enums';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard, RolesGuard)
+/*@UseGuards(JwtAuthGuard, RolesGuard)*/
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('admin')
-  @Roles(RoleEnum.ADMINISTRADOR, RoleEnum.SUPERVISOR, RoleEnum.DIRECTOR) // Solo admins, directores y supervisores pueden ver la lista
+  // Listar todos los usuarios
+  @Get()
+  /*@Roles(RoleEnum.ADMINISTRADOR, RoleEnum.SUPERVISOR) */// Solo admins, directores y supervisores pueden ver la lista
   findAll() {
     return this.usersService.findAll();
   }
@@ -24,26 +25,36 @@ export class UsersController {
     return this.usersService.update(Number(id), updateUserDto, req.user.id, req.user.role);
   }
 
+  // Crear usuario (Solo Administradores)
   @Post('create')
-  @Roles(RoleEnum.ADMINISTRADOR)  // Solo los administradores pueden acceder
-  create(@Body() createUserDto: CreateUserDto, @Request() req) {
+  /*@UseGuards(JwtAuthGuard, RolesGuard)*/
+  @Roles(RoleEnum.ADMINISTRADOR)
+  async create(@Body() createUserDto: CreateUserDto, @Request() req) {
     return this.usersService.create(createUserDto, req.user.id);
   }
-
-  @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.registerUser(createUserDto);
-  }
-
   @Get('audit')
   @Roles(RoleEnum.ADMINISTRADOR)  // Solo los administradores pueden acceder
   async getAudit() {
     return this.usersService.getAudit();
   }
+
+  // Obtener usuario por correo
+  @Get('email/:email')
+  async findByEmail(@Param('email') email: string) {
+    return this.usersService.findByEmail(email);
+  }
+
+  // Listar usuarios por rol
+  @Get('role/:role')
+  async findByRole(@Param('role') role: RoleEnum) {
+    return this.usersService.findByRole(role);
+  }
+
+
   /*@Get('Administrador')
   @Roles('Administrador')
   getAdministradorData() {
-    return { message: 'Solo accesible para administradores' };
+    return { message: 'Solo accesible para administradores' } ;
   }
 
   @Get('Director')
