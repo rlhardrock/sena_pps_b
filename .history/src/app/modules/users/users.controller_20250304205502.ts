@@ -30,10 +30,7 @@ export class UsersController {
     return this.usersService.create(createUserDto, req.user.id);
   }
 
-  @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.registerUser(createUserDto);
-  }
+  
 
   @Get('audit')
   @Roles(RoleEnum.ADMINISTRADOR)  // Solo los administradores pueden acceder

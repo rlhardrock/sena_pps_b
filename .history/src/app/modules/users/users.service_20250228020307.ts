@@ -12,7 +12,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-  ) { }
+  ) {}
 
   async findAll(): Promise<User[]> {
     return this.usersRepository.find({ select: ['id', 'email', 'role'] });
@@ -40,8 +40,8 @@ export class UsersService {
     Object.assign(user, updateUserDto);
     return this.usersRepository.save(user);
   }
-
   async create(createUserDto: CreateUserDto, adminId: number): Promise<User> {
+
     const adminUser = await this.usersRepository.findOne({ where: { id: adminId } });
 
     if (!adminUser || adminUser.role !== RoleEnum.ADMINISTRADOR) {
@@ -71,14 +71,4 @@ export class UsersService {
       .getRawMany();
   }
 
-  // Nuevo método para permitir el registro de usuarios sin requerir un administrador
-  async registerUser(createUserDto: CreateUserDto): Promise<User> {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-    const user = this.usersRepository.create({
-      ...createUserDto,
-      password: hashedPassword,
-    });
-
-    return this.usersRepository.save(user);
-  }
 }
