@@ -1,9 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm';
+import { Carcass } from '../../carcasses/entities/carcass.entity';
 
 @Entity()
 export class Beneficio {
   @PrimaryGeneratedColumn()
   id_beneficio: number;
+
+  @OneToMany(() => Carcass, (carcass) => carcass.beneficio)
+  carcasses: Carcass[];
 
   @Column({unique: true})
   id_remision: string;

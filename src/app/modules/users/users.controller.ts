@@ -1,7 +1,6 @@
 import { Controller, Post, Body, UseGuards, Get, Patch, Param, Request, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { RoleEnum } from '../../../common/enums';
@@ -9,18 +8,19 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 /*@UseGuards(JwtAuthGuard, RolesGuard)*/
+@UseGuards(RolesGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   // Listar todos los usuarios
   @Get()
-  /*@Roles(RoleEnum.ADMINISTRADOR, RoleEnum.SUPERVISOR) */// Solo admins, directores y supervisores pueden ver la lista
+ /* @Roles(RoleEnum.ADMINISTRADOR, RoleEnum.SUPERVISOR) */// Solo admins, directores y supervisores pueden ver la lista
   findAll() {
     return this.usersService.findAll();
   }
 
   @Patch(':id')
-  @Roles(RoleEnum.ADMINISTRADOR) // Solo admins pueden editar
+  /*@Roles(RoleEnum.ADMINISTRADOR)*/ // Solo admins pueden editar
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req) {
     return this.usersService.update(Number(id), updateUserDto, req.user.id, req.user.role);
   }
@@ -28,24 +28,26 @@ export class UsersController {
   // Crear usuario (Solo Administradores)
   @Post('create')
   /*@UseGuards(JwtAuthGuard, RolesGuard)*/
-  @Roles(RoleEnum.ADMINISTRADOR)
+  /*@Roles(RoleEnum.ADMINISTRADOR)*/
   async create(@Body() createUserDto: CreateUserDto, @Request() req) {
     return this.usersService.create(createUserDto, req.user.id);
   }
   @Get('audit')
-  @Roles(RoleEnum.ADMINISTRADOR)  // Solo los administradores pueden acceder
+  /*@Roles(RoleEnum.ADMINISTRADOR)*/  // Solo los administradores pueden acceder
   async getAudit() {
     return this.usersService.getAudit();
   }
 
   // Obtener usuario por correo
   @Get('email/:email')
+  /*@Roles(RoleEnum.ADMINISTRADOR, RoleEnum.SUPERVISOR)*/
   async findByEmail(@Param('email') email: string) {
     return this.usersService.findByEmail(email);
   }
 
   // Listar usuarios por rol
   @Get('role/:role')
+  /*@Roles(RoleEnum.ADMINISTRADOR, RoleEnum.SUPERVISOR)*/
   async findByRole(@Param('role') role: RoleEnum) {
     return this.usersService.findByRole(role);
   }

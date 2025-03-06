@@ -1,15 +1,15 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateCarcassDto {
   @IsString()
   @IsNotEmpty()
   id_remision: string;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   canales_decomisadas: number;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   canales_destrozadas: number;
 

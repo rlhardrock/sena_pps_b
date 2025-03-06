@@ -1,9 +1,9 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class UpdateBeneficioDto {
-  /*@IsOptional()
+  @IsOptional()
   @IsString()
-  id_remision?: string;*/
+  id_remision?: string;
 
   @IsOptional()
   @IsString()
@@ -30,11 +30,11 @@ export class UpdateBeneficioDto {
   sexo?: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   edad?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   peso_promedio_ave_granja?: number;
 
   @IsOptional()
@@ -70,38 +70,38 @@ export class UpdateBeneficioDto {
   nombre_auditor?: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   aves_por_guacal?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   guacales_vacios?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   guacales_usados?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   guacal_extra?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   aves_remisionadas?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   aves_colgadas?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   aves_asfixiadas?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   peso_1_guacal_vacio?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   peso_torre_7_guacales?: number;
 }

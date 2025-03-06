@@ -8,6 +8,8 @@ import { CarcassesModule } from './app/modules/carcasses/carcasses.module';
 import { Beneficio } from './app/modules/beneficios/entities/beneficio.entity';
 import { Carcass } from './app/modules/carcasses/entities/carcass.entity';
 import { AuthModule } from './app/modules/auth/auth.module';
+import { RolesGuard } from './app/modules/auth/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 
 @Module({
@@ -34,7 +36,10 @@ import { AuthModule } from './app/modules/auth/auth.module';
     AuthModule
   ],
   controllers: [],
-  providers: [],
+  providers: [{
+    provide: APP_GUARD,
+    useClass: RolesGuard,
+  }],
   exports: []
 })
 export class AppModule {}

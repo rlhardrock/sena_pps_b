@@ -108,7 +108,7 @@ export class UsersService {
       .getRawMany();
   }
 
-  /*// Nuevo método para permitir el registro de usuarios sin requerir un administrador
+  /*// Nuevo
   async registerUser(createUserDto: CreateUserDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const user = this.usersRepository.create({

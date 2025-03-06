@@ -4,8 +4,7 @@ import {
 import { CreateBeneficioDto } from './dto/create-beneficio.dto';
 import { UpdateBeneficioDto } from './dto/update-beneficio.dto';
 import { BeneficiosService } from './beneficios.service';
-import { RoleEnum } from '../../../common/enums';
-import { Roles } from '../auth/roles.decorator';
+import { Beneficio } from './entities/beneficio.entity';
 
 @Controller('beneficio')
 export class BeneficiosController {
@@ -23,6 +22,11 @@ export class BeneficiosController {
   /*@Roles(RoleEnum.SUPERVISOR)*/
   async listarTodasLasRemisiones() {
     return this.beneficiosService.listarTodasLasRemisiones();
+  }
+
+  @Get()
+  async findAll(): Promise<Beneficio[]> {
+    return this.beneficiosService.findAll();
   }
 
   // Listar id_remision de una empresa específica.
