@@ -33,10 +33,17 @@ export class UsersService {
 
   // Listar todos los usuarios (solo ID, email y rol)
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find({ select: ['id', 'email', 'role'] });
+    return this.usersRepository.find({ select: ['id', 'email', 'role', 'estado'] });
   }
 
-  // Crear usuario (solo un administrador puede hacerlo)
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = this.usersRepository.create(createUserDto);
+    return this.usersRepository.save(user);
+  }
+
+
+
+  /*// Crear usuario (solo un administrador puede hacerlo)
   async create(createUserDto: CreateUserDto, adminId: number): Promise<User> {
     const adminUser = await this.usersRepository.findOne({ where: { id: adminId } });
     if (!adminUser || adminUser.role !== RoleEnum.ADMINISTRADOR) {
@@ -44,7 +51,7 @@ export class UsersService {
     }
     const user = this.usersRepository.create(createUserDto);
     return this.usersRepository.save(user);
-  }
+  }*/
 
   /*async create(createUserDto: CreateUserDto, adminId: number): Promise<User> {
     const adminUser = await this.usersRepository.findOne({ where: { id: adminId } });
@@ -62,9 +69,9 @@ export class UsersService {
 
   // ✅ Actualizar usuario (solo un administrador)
   async update(id: number, updateUserDto: UpdateUserDto, adminId: number, adminRole: RoleEnum): Promise<User> {
-    if (adminRole !== RoleEnum.ADMINISTRADOR) {
+    /*if (adminRole !== RoleEnum.ADMINISTRADOR) {
       throw new ForbiddenException('Solo los administradores pueden actualizar información de los usuarios');
-    }
+    }*/
     const user = await this.usersRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');

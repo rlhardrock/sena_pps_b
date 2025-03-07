@@ -5,8 +5,11 @@ import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { RoleEnum } from '../../../common/enums';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@Controller('users')
+@ApiTags('Usuarios')
+@ApiBearerAuth()
+@Controller('usuarios')
 /*@UseGuards(JwtAuthGuard, RolesGuard)*/
 @UseGuards(RolesGuard)
 export class UsersController {
@@ -25,14 +28,23 @@ export class UsersController {
     return this.usersService.update(Number(id), updateUserDto, req.user.id, req.user.role);
   }
 
+
+  @Post('crear')
+  async create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto); // No requiere adminId
+  }
+
+  /*
   // Crear usuario (Solo Administradores)
-  @Post('create')
-  /*@UseGuards(JwtAuthGuard, RolesGuard)*/
-  /*@Roles(RoleEnum.ADMINISTRADOR)*/
+  @Post('crear')
+  /!*@UseGuards(JwtAuthGuard, RolesGuard)*!/
+  /!*@Roles(RoleEnum.ADMINISTRADOR)*!/
   async create(@Body() createUserDto: CreateUserDto, @Request() req) {
     return this.usersService.create(createUserDto, req.user.id);
-  }
-  @Get('audit')
+  }*/
+
+
+  @Get('auditar')
   /*@Roles(RoleEnum.ADMINISTRADOR)*/  // Solo los administradores pueden acceder
   async getAudit() {
     return this.usersService.getAudit();

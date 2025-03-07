@@ -4,7 +4,10 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { CarcassService } from './carcasses.service';
 import { RoleEnum } from '../../../common/enums';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Canalizado')
+@ApiBearerAuth()
 @Controller('carcass')
 /*@UseGuards(JwtAuthGuard, RolesGuard)*/
 @UseGuards(RolesGuard)

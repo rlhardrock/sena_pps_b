@@ -15,7 +15,7 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ type: 'timestamp', precision: 0 })
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', precision: 0 })
   fecha_inscripcion: Date;
 
   @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.MODERADOR })

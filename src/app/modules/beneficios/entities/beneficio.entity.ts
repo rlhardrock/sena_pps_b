@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm';
 import { Carcass } from '../../carcasses/entities/carcass.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Beneficio {
@@ -9,15 +10,19 @@ export class Beneficio {
   @OneToMany(() => Carcass, (carcass) => carcass.beneficio)
   carcasses: Carcass[];
 
+  @ApiProperty({ example: 'REM123456', description: 'ID de la remisión' })
   @Column({unique: true})
   id_remision: string;
 
+  @ApiProperty({ example: 'Rassiya', description: 'Empresa Remitente del viaje' })
   @Column()
   id_empresa: string;
 
+  @ApiProperty({ example: 'Danbass', description: 'Origen de la remision de los animales' })
   @Column()
   region_procedencia: string;
 
+  @ApiProperty({ example: 'Danietsk', description: 'Nombre mas especifico ' })
   @Column()
   granja: string;
 

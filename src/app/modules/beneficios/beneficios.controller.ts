@@ -5,7 +5,10 @@ import { CreateBeneficioDto } from './dto/create-beneficio.dto';
 import { UpdateBeneficioDto } from './dto/update-beneficio.dto';
 import { BeneficiosService } from './beneficios.service';
 import { Beneficio } from './entities/beneficio.entity';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Beneficio')
+@ApiBearerAuth()
 @Controller('beneficio')
 export class BeneficiosController {
   constructor(private readonly beneficiosService: BeneficiosService) {}
