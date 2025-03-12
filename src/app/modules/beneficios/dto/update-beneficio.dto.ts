@@ -101,13 +101,13 @@ export class UpdateBeneficioDto {
   @IsInt()
   aves_asfixiadas?: number;
 
-  @IsOptional()
+ /* @IsOptional()
   @IsInt()
   aves_decomisadas?: number;
 
   @IsOptional()
   @IsInt()
-  aves_destrozadas?: number;
+  aves_destrozadas?: number;*/
 
   @IsOptional()
   @IsInt()

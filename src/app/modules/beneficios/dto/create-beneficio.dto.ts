@@ -110,13 +110,13 @@ export class CreateBeneficioDto {
   @IsNotEmpty()
   aves_asfixiadas: number;
 
-  @IsInt()
+  /*@IsInt()
   @IsNotEmpty()
   aves_decomisadas: number;
 
   @IsInt()
   @IsNotEmpty()
-  aves_destrozadas: number;
+  aves_destrozadas: number;*/
 
   @IsInt()
   @IsNotEmpty()

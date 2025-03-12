@@ -130,56 +130,69 @@ export class Beneficio {
   @Column({ type: 'int' })
   peso_torre_7_guacales: number;
 
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculatePesoAvePlanta() {
+    this.peso_promedio_ave_planta =
+      (( this.aves_por_guacal * 7 ) - (this.peso_1_guacal_vacio * 7));
+  }
+  @Column({ type: 'int' })
+  peso_promedio_ave_planta: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculateDiferencial() {
+    this.diferencial_peso_granja_planta =
+      (this.peso_promedio_ave_granja - this.peso_promedio_ave_planta);
+  }
+  @Column({ type: 'int' })
+  diferencial_peso_granja_planta: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculatePesoLotePlanta() {
+    this.peso_ton_lote_procesada =
+      ((this.peso_promedio_ave_planta * this.aves_colgadas)/1000000);
+  }
+  @Column({ type: 'decimal', precision: 6, scale: 3 })
+  peso_ton_lote_procesada: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculateCanalizadoDelLote() {
+    this.canales_obtenidas =
+      (this.aves_colgadas - this.aves_decomisadas - this.aves_destrozadas);
+  }
+  @Column({ type: 'int'})
+  canales_obtenidas: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  calculateEntregaDelLote() {
+    this.diferencial_aves_entrega =
+      ((this.aves_remisionadas - (this.aves_colgadas + this.aves_asfixiadas)));
+  }
+  @Column({ type: 'int'})
+  diferencial_aves_entrega: number;
+
+
   /* 
-   @BeforeInsert()
-   @BeforeUpdate()
-   calculatePesoAvePlanta() {
-     this.peso_promedio_ave_planta =
-       (this.peso_torre_7_guacales / ( this.aves_por_guacal * 7 )) -
-       (this.peso_1_guacal_vacio * 7);
-   }
- 
-   @Column({ type: 'int' })
-   peso_promedio_ave_planta: number;
- 
-   @BeforeInsert()
-   @BeforeUpdate()
-   calculatePesoLotePlanta() {
-     this.peso_lote_aves_planta =
-       ((this.peso_promedio_ave_planta * this.aves_colgadas)/1000);
-   }
- 
-   @Column({ type: 'decimal', precision: 6, scale: 0 })
-   peso_lote_aves_planta: number;
- 
-   @BeforeInsert()
-   @BeforeUpdate()
-   calculateDiferencial() {
-     this.diferencial_peso_granja_planta =
-       (this.peso_promedio_ave_granja * this.aves_colgadas) - (this.peso_promedio_ave_planta * this.aves_colgadas);
-   }
- 
-   @Column({ type: 'int' })
-   diferencial_peso_granja_planta: number;
- 
    @BeforeInsert()
    @BeforeUpdate()
    calculateMerma() {
      this.indiceMerma =
        (((this.peso_promedio_ave_granja * this.aves_colgadas) / (this.peso_lote_aves_planta)) * 100 );
    }
- 
-   @Column({ type: 'decimal', precision: 6, scale: 0  })
+   @Column({ type: 'decimal', precision: 6, scale: 3  })
    indiceMerma: number;
  
    @BeforeInsert()
    @BeforeUpdate()
    calculateRendimientoCanal() {
      this.peso_total_rendimiento_canal =
-       (((this.peso_promedio_ave_planta * this.aves_colgadas) * 0.75 )/1000);
+       (((this.peso_promedio_ave_planta * this.aves_colgadas) * 0.75 )/1000000);
    }
- 
-   @Column({ type: 'decimal', precision: 6, scale: 0  })
+   @Column({ type: 'decimal', precision: 6, scale: 3  })
    peso_total_rendimiento_canal: number;
  
    @BeforeInsert()
@@ -189,7 +202,7 @@ export class Beneficio {
        ((this.peso_total_rendimiento_canal + (this.peso_total_rendimiento_canal * 0.14))/1000);
    }
  
-   @Column({ type: 'decimal', precision: 6, scale: 0  })
+   @Column({ type: 'decimal', precision: 6, scale: 3  })
    peso_hidratacion_lote: number;
  
    @BeforeInsert()
@@ -198,8 +211,7 @@ export class Beneficio {
      this.peso_rendimiento_visceras_rojas =
        ((this.peso_lote_aves_planta + (this.peso_lote_aves_planta * 0.07))/1000);
    }
- 
-   @Column({ type: 'decimal', precision: 6, scale: 0  })
+   @Column({ type: 'decimal', precision: 6, scale: 3  })
    peso_rendimiento_visceras_rojas: number;
  
    @BeforeInsert()
@@ -208,7 +220,6 @@ export class Beneficio {
      this.peso_rendimiento_visceras_blancas =
        ((this.peso_lote_aves_planta + (this.peso_lote_aves_planta * 0.05))/1000);
    }
- 
    @Column({ type: 'decimal', precision: 6, scale: 0  })
    peso_rendimiento_visceras_blancas: number;
  
@@ -218,7 +229,6 @@ export class Beneficio {
      this.peso_rendimiento_sangre_patas_cabezas =
        ((this.peso_lote_aves_planta + (this.peso_lote_aves_planta * 0.03))/1000);
    }
- 
    @Column({ type: 'decimal', precision: 6, scale: 0  })
    peso_rendimiento_sangre_patas_cabezas: number;
  
@@ -230,7 +240,6 @@ export class Beneficio {
        (this.peso_rendimiento_visceras_blancas ?? 0) +
        ((this.peso_rendimiento_sangre_patas_cabezas ?? 0) * 3) / 1000 )
    }
- 
    @Column({ type: 'decimal', precision: 6, scale: 0  })
    total_rendimiento_extra: number;*/
 
