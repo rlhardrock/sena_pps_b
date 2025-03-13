@@ -1,5 +1,6 @@
 import {
-  Controller, Post, Get, Patch, Body, Param, Query } from '@nestjs/common';
+  Controller, Post, Get, Patch, Body, Param, Query, ParseIntPipe
+} from '@nestjs/common';
 import { CreateBeneficioDto } from './dto/create-beneficio.dto';
 import { UpdateBeneficioDto } from './dto/update-beneficio.dto';
 import { BeneficiosService } from './beneficios.service';
@@ -47,7 +48,7 @@ export class BeneficiosController {
     return this.beneficiosService.listarRemisionesPorEmpresa(id_empresa);
   }
 
-  //Buscar un beneficio por id_remision.
+ //Buscar un broiler por id_remision.
   @Get(':id_remision')
   /*@Roles(RoleEnum.SUPERVISOR)*/
   async buscarPorRemision(@Param('id_remision') id_remision: string) {
@@ -61,7 +62,7 @@ export class BeneficiosController {
     return this.beneficiosService.crearBeneficio(createBeneficioDto);
   }
 
-  // Editar un beneficio por id_remision.
+  // Editar un broiler por id_remision.
   @Patch(':id_remision')
   /*@Roles(RoleEnum.SUPERVISOR)*/
   async actualizarPorRemision(

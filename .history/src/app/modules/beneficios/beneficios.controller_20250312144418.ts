@@ -1,5 +1,6 @@
 import {
-  Controller, Post, Get, Patch, Body, Param, Query } from '@nestjs/common';
+  Controller, Post, Get, Patch, Body, Param, Query, ParseIntPipe
+} from '@nestjs/common';
 import { CreateBeneficioDto } from './dto/create-beneficio.dto';
 import { UpdateBeneficioDto } from './dto/update-beneficio.dto';
 import { BeneficiosService } from './beneficios.service';
@@ -12,11 +13,11 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class BeneficiosController {
   constructor(private readonly beneficiosService: BeneficiosService) { }
 
-  // Listar todos los beneficios.
-  @Get()
-  /*@Roles(RoleEnum.SUPERVISOR)*/
-  async listarTodosLosBeneficios(): Promise<Beneficio[]> {
-    return this.beneficiosService.listarTodosLosBeneficios();
+  // Crear un beneficio
+  @Post()
+  /*@Roles(RoleEnum.JEFE_AREA_SUCIA, RoleEnum.SUPERVISOR)*/
+  async crearBeneficio(@Body() createBeneficioDto: CreateBeneficioDto) {
+    return this.beneficiosService.crearBeneficio(createBeneficioDto);
   }
 
   // Listar todos los id_remision disponibles.
@@ -47,21 +48,16 @@ export class BeneficiosController {
     return this.beneficiosService.listarRemisionesPorEmpresa(id_empresa);
   }
 
-  //Buscar un beneficio por id_remision.
+  // 
+
+  //Buscar un broiler por id_remision.
   @Get(':id_remision')
   /*@Roles(RoleEnum.SUPERVISOR)*/
   async buscarPorRemision(@Param('id_remision') id_remision: string) {
     return this.beneficiosService.buscarPorRemision(id_remision);
   }
 
-  // Crear un beneficio
-  @Post()
-  /*@Roles(RoleEnum.JEFE_AREA_SUCIA, RoleEnum.SUPERVISOR)*/
-  async crearBeneficio(@Body() createBeneficioDto: CreateBeneficioDto) {
-    return this.beneficiosService.crearBeneficio(createBeneficioDto);
-  }
-
-  // Editar un beneficio por id_remision.
+  // Editar un broiler por id_remision.
   @Patch(':id_remision')
   /*@Roles(RoleEnum.SUPERVISOR)*/
   async actualizarPorRemision(

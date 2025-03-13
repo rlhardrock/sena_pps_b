@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Beneficio } from './entities/beneficio.entity';
@@ -41,6 +41,7 @@ export class BeneficiosService {
     return this.beneficioRepository.find();
   }
 
+
   // Listar todos los id_remision de una empresa específica.
   async listarRemisionesPorEmpresa(id_empresa: string): Promise<{ id_remision: string }[]> {
     return this.beneficioRepository.find({
@@ -66,18 +67,16 @@ export class BeneficiosService {
     return beneficio;
   }
 
-  // Editar un beneficio por id_remision (Supervisor).
-  async actualizarPorRemision(id_remision: string, updateBeneficioDto: UpdateBeneficioDto): Promise<Beneficio> {
+  // Editar un beneficio broiler por id_remision (Supervisor).
+  async actualizarPorRemision(
+    id_remision: string,
+    updateBeneficioDto: UpdateBeneficioDto,
+  ): Promise<Beneficio> {
     const beneficio = await this.beneficioRepository.findOne({ where: { id_remision } });
     if (!beneficio) {
-      throw new NotFoundException(`No se encontró beneficio con id_remision ${id_remision}`);
+      throw new NotFoundException('No se encontró la remisión');
     }
     await this.beneficioRepository.update({ id_remision }, updateBeneficioDto);
-    const beneficioActualizado = await this.beneficioRepository.findOne({ where: { id_remision } });
-    if (!beneficioActualizado) {
-      throw new InternalServerErrorException(`Error al actualizar el beneficio con id_remision ${id_remision}`);
-    }
-    return beneficioActualizado;
+    return { message: 'Beneficio actualizado correctamente' };
   }
-
 }

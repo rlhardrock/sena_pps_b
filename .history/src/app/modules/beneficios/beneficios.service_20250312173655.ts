@@ -41,6 +41,7 @@ export class BeneficiosService {
     return this.beneficioRepository.find();
   }
 
+
   // Listar todos los id_remision de una empresa específica.
   async listarRemisionesPorEmpresa(id_empresa: string): Promise<{ id_remision: string }[]> {
     return this.beneficioRepository.find({

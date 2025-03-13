@@ -41,6 +41,7 @@ export class BeneficiosService {
     return this.beneficioRepository.find();
   }
 
+
   // Listar todos los id_remision de una empresa específica.
   async listarRemisionesPorEmpresa(id_empresa: string): Promise<{ id_remision: string }[]> {
     return this.beneficioRepository.find({
@@ -66,9 +67,10 @@ export class BeneficiosService {
     return beneficio;
   }
 
-  // Editar un beneficio por id_remision (Supervisor).
+  // Editar un beneficio broiler por id_remision (Supervisor).
   async actualizarPorRemision(id_remision: string, updateBeneficioDto: UpdateBeneficioDto): Promise<Beneficio> {
     const beneficio = await this.beneficioRepository.findOne({ where: { id_remision } });
+
     if (!beneficio) {
       throw new NotFoundException(`No se encontró beneficio con id_remision ${id_remision}`);
     }

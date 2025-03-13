@@ -1,5 +1,5 @@
 import {
-  Controller, Post, Get, Patch, Body, Param, Query } from '@nestjs/common';
+  Controller, Post, Get, Patch, Body, Param, Query, } from '@nestjs/common';
 import { CreateBeneficioDto } from './dto/create-beneficio.dto';
 import { UpdateBeneficioDto } from './dto/update-beneficio.dto';
 import { BeneficiosService } from './beneficios.service';
