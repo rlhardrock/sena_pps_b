@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, OneToMany } from 'typeorm';
 import { EstadoEnum, RoleEnum } from '../../../../common/enums';
+import { Exclude, Transform } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -13,6 +14,7 @@ export class User {
   email: string;
 
   @Column()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', precision: 0 })
@@ -25,11 +27,17 @@ export class User {
   estado: EstadoEnum;
 
   @ManyToOne(() => User, (user) => user.createdUser, { nullable: true })
+  @Transform(({ value }) => value ? { id: value.id, email: value.email } : null)
   createdBy: User;
 
   @OneToMany(() => User, (user) => user.createdBy)
+  @Transform(({ value }) => value ? value.map(u => ({ id: u.id, email: u.email })) : [])
   createdUser: User[];
 
   @CreateDateColumn()
   createdAt: Date;
+
+  constructor(partial: Partial<User>) {
+    Object.assign(this, partial);
+  }
 }

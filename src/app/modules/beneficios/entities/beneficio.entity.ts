@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm';
-import { Carcass } from '../../carcasses/entities/carcass.entity';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
