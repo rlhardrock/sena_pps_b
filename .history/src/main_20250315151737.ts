@@ -28,12 +28,8 @@ async function bootstrap() {
     })
   );
 
-  // Habilitar CORS para que el frontend pueda comunicarse con el backend
-  app.enableCors({
-    origin: 'https://avicola.netlify.app', // Permite solo tu frontend
-    methods: 'GET, POST, PUT, PATCH, DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
-  });
+  app.enableCors(); // Habilitar CORS para que el frontend pueda comunicarse con el backend
+  
 
   const port = process.env.PORT ?? 3000; // Definir el puerto, usando 3000 por defecto
   await app.listen(port);
