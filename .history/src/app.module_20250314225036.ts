@@ -1,4 +1,4 @@
-import { Module, ClassSerializerInterceptor } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UsersModule } from './app/modules/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -8,6 +8,8 @@ import { Beneficio } from './app/modules/beneficios/entities/beneficio.entity';
 import { AuthModule } from './app/modules/auth/auth.module';
 import { RolesGuard } from './app/modules/auth/roles.guard';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import {  } from '@nestjs/common';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
