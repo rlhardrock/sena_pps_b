@@ -130,7 +130,7 @@ export class Beneficio {
   @BeforeUpdate()
   calculatePesoAvePlanta() {
     this.peso_promedio_ave_planta =
-      (( this.aves_por_guacal * 7 ) - (this.peso_1_guacal_vacio * 7));
+      this.aves_por_guacal * 7 - this.peso_1_guacal_vacio * 7;
   }
   @Column({ type: 'int', default: 0 })
   peso_promedio_ave_planta: number;
@@ -139,7 +139,7 @@ export class Beneficio {
   @BeforeUpdate()
   calculateDiferencial() {
     this.diferencial_peso_granja_planta =
-      (this.peso_promedio_ave_granja - this.peso_promedio_ave_planta);
+      this.peso_promedio_ave_granja - this.peso_promedio_ave_planta;
   }
   @Column({ type: 'int', default: 0 })
   diferencial_peso_granja_planta: number;
@@ -148,7 +148,7 @@ export class Beneficio {
   @BeforeUpdate()
   calculatePesoLotePlanta() {
     this.peso_ton_lote_procesada =
-      ((this.peso_promedio_ave_planta * this.aves_colgadas)/1000000);
+      (this.peso_promedio_ave_planta * this.aves_colgadas) / 1000000;
   }
   @Column({ type: 'decimal', precision: 6, scale: 3, default: 0 })
   peso_ton_lote_procesada: number;
@@ -157,20 +157,19 @@ export class Beneficio {
   @BeforeUpdate()
   calculateCanalizadoDelLote() {
     this.canales_obtenidas =
-      (this.aves_colgadas - this.aves_decomisadas - this.aves_destrozadas);
+      this.aves_colgadas - this.aves_decomisadas - this.aves_destrozadas;
   }
-  @Column({ type: 'int', default: 0})
+  @Column({ type: 'int' })
   canales_obtenidas: number;
 
   @BeforeInsert()
   @BeforeUpdate()
   calculateEntregaDelLote() {
     this.diferencial_aves_entrega =
-      ((this.aves_remisionadas - (this.aves_colgadas + this.aves_asfixiadas)));
+      this.aves_remisionadas - this.aves_colgadas - this.aves_asfixiadas;
   }
-  @Column({ type: 'int', default: 0})
+  @Column({ type: 'int' })
   diferencial_aves_entrega: number;
-
 
   /* 
    @BeforeInsert()
