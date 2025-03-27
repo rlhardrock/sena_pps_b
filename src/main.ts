@@ -33,6 +33,7 @@ async function bootstrap() {
     origin: 'https://avicola.netlify.app', // Permite solo tu frontend
     methods: 'GET, POST, PUT, PATCH, DELETE',
     allowedHeaders: 'Content-Type, Authorization',
+    credentials: false
   });
 
   const port = process.env.PORT ?? 3000; // Definir el puerto, usando 3000 por defecto

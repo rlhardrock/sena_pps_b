@@ -14,14 +14,12 @@ export class BeneficiosController {
 
   // Listar todos los beneficios.
   @Get()
-  /*@Roles(RoleEnum.SUPERVISOR)*/
   async listarTodosLosBeneficios(): Promise<Beneficio[]> {
     return this.beneficiosService.listarTodosLosBeneficios();
   }
 
   // Listar todos los id_remision disponibles.
   @Get('remisiones')
-  /*@Roles(RoleEnum.SUPERVISOR)*/
   async listarTodasLasRemisiones() {
     return this.beneficiosService.listarTodasLasRemisiones();
   }
@@ -42,28 +40,24 @@ export class BeneficiosController {
 
   // Listar id_remision de una empresa específica.
   @Get('empresas')
-  /*@Roles(RoleEnum.SUPERVISOR)*/
   async listarRemisionesPorEmpresa(@Query('id_empresa') id_empresa: string) {
     return this.beneficiosService.listarRemisionesPorEmpresa(id_empresa);
   }
 
   //Buscar un beneficio por id_remision.
   @Get(':id_remision')
-  /*@Roles(RoleEnum.SUPERVISOR)*/
   async buscarPorRemision(@Param('id_remision') id_remision: string) {
     return this.beneficiosService.buscarPorRemision(id_remision);
   }
 
   // Crear un beneficio
   @Post()
-  /*@Roles(RoleEnum.JEFE_AREA_SUCIA, RoleEnum.SUPERVISOR)*/
   async crearBeneficio(@Body() createBeneficioDto: CreateBeneficioDto) {
     return this.beneficiosService.crearBeneficio(createBeneficioDto);
   }
 
   // Editar un beneficio por id_remision.
   @Patch(':id_remision')
-  /*@Roles(RoleEnum.SUPERVISOR)*/
   async actualizarPorRemision(
     @Param('id_remision') id_remision: string,
     @Body() updateBeneficioDto: UpdateBeneficioDto,
